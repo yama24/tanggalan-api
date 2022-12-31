@@ -68,8 +68,8 @@ class Tanggalan
                         $left = $arrDate[2] - $arrDate[0];
                         for ($i = 1; $i <= $left; $i++) {
                             $libur[] = [
-                                'text' => $tahun . '-' . $bulan . '-' . $date + $i,
-                                'date' => $date + $i,
+                                'text' => $tahun . '-' . $bulan . '-' . ($date + $i),
+                                'date' => ($date + $i),
                                 'name' => trim($name),
                             ];
                         }
@@ -89,8 +89,8 @@ class Tanggalan
                         $left = $arrDate[2] - $arrDate[0];
                         for ($i = 1; $i <= $left; $i++) {
                             $peringatan[] = [
-                                'text' => $tahun . '-' . $bulan . '-' . $date + $i,
-                                'date' => $date + $i,
+                                'text' => $tahun . '-' . $bulan . '-' . ($date + $i),
+                                'date' => ($date + $i),
                                 'name' => trim($name),
                             ];
                         }
