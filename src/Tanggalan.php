@@ -54,21 +54,48 @@ class Tanggalan
         $peringatan = [];
         foreach ($events as $e) {
             $ev = HtmlDomParser::str_get_html($e);
-            $date = explode(' ', $ev->findOne('div.tanggal')->text())[0];
             if (strpos($e, 'namaevent libur') !== false) {
                 $name = $ev->findOne('div.namaevent.libur')->text();
+                $arrDate = explode(' ', trim(explode($name, $ev->findOne('div')->text())[1]));
+                $date = (int)$arrDate[0];
                 $libur[] = [
                     'text' => $tahun . '-' . $bulan . '-' . $date,
                     'date' => $date,
                     'name' => trim($name),
                 ];
+                if (isset($arrDate[2])) {
+                    if (is_numeric($arrDate[2])) {
+                        $left = $arrDate[2] - $arrDate[0];
+                        for ($i = 1; $i <= $left; $i++) {
+                            $libur[] = [
+                                'text' => $tahun . '-' . $bulan . '-' . $date + $i,
+                                'date' => $date + $i,
+                                'name' => trim($name),
+                            ];
+                        }
+                    }
+                }
             } else {
                 $name = $ev->findOne('div.namaevent')->text();
+                $arrDate = explode(' ', trim(explode($name, $ev->findOne('div')->text())[1]));
+                $date = (int)$arrDate[0];
                 $peringatan[] = [
                     'text' => $tahun . '-' . $bulan . '-' . $date,
                     'date' => $date,
                     'name' => trim($name),
                 ];
+                if (isset($arrDate[2])) {
+                    if (is_numeric($arrDate[2])) {
+                        $left = $arrDate[2] - $arrDate[0];
+                        for ($i = 1; $i <= $left; $i++) {
+                            $peringatan[] = [
+                                'text' => $tahun . '-' . $bulan . '-' . $date + $i,
+                                'date' => $date + $i,
+                                'name' => trim($name),
+                            ];
+                        }
+                    }
+                }
             }
         }
         $kalender = [];
@@ -108,7 +135,7 @@ class Tanggalan
                 $kalender[$id] = [
                     'type' => 'current',
                     'text' => $tahun . '-' . $bulan . '-' . $ki,
-                    'date' => $ki,
+                    'date' => (int)$ki,
                     'day' => $days[$id % 7],
                     'holiday' => $holiday,
                     'peringatan' => $memorial,
