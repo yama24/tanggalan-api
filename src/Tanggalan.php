@@ -99,13 +99,26 @@ class Tanggalan
             }
         }
         $kalender = [];
+        $tahunBefore = $tahun;
+        $bulanBefore = $bulan - 1;
+        if ($bulanBefore < 1) {
+            $bulanBefore = 12;
+            $tahunBefore = $tahun - 1;
+        }
+        $tahunAfter = $tahun;
+        $bulanAfter = $bulan + 1;
+        if ($bulanAfter > 12) {
+            $bulanAfter = 1;
+            $tahunAfter = $tahun + 1;
+        }
         $kalenderKosong = $html->findMulti('div#wrapper div#main ul li s')->text();
         $count = $lastDateBefore - count($kalenderKosong) + 1;
         $id = 0;
         for ($i = 0; $i < count($kalenderKosong); $i++) {
             $kalender[$id] = [
                 'type' => 'before',
-                'text' => $tahun . '-' . $bulan . '-' . $count,
+                // 'text' => $tahun . '-' . $bulan . '-' . $count,
+                'text' => $tahunBefore . '-' . $bulanBefore . '-' . $count,
                 'date' => $count,
                 'day' => $days[$id],
                 'holiday' => null,
@@ -149,7 +162,8 @@ class Tanggalan
             $t = $i + 1;
             $kalender[$id] = [
                 'type' => 'after',
-                'text' => $tahun . '-' . $bulan . '-' . $t,
+                // 'text' => $tahun . '-' . $bulan . '-' . $t,
+                'text' => $tahunAfter . '-' . $bulanAfter . '-' . $t,
                 'date' => $t,
                 'day' => $days[$id % 7],
                 'holiday' => null,
